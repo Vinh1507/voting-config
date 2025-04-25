@@ -1,0 +1,1 @@
+docker exec -it typ_voting_backend npx sequelize-cli db:migrate

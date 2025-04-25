@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  sql_lab_client:
+    image: vinhbh/typ-voting-guest:1.0
+    container_name: typ_voting_guest
+    ports:
+      - "3005:80"
+  typ_voting_backend:
+    container_name: typ_voting_backend
+    image: vinhbh/typ-voting-api:1.3
+    ports:
+      - "8005:8000"
+    command: sh -c "npm run prod & node worker.js && wait"
+    networks:
+      - typ_voting_network_prod
+    depends_on:
+      - typ_voting_db
+    environment:
+      DEFAULT_ADMIN_USERNAME: admin
+      DEFAULT_ADMIN_PASSWORD: 2025_voting_typ@123
+
+  typ_voting_db:
+    image: mysql:8.0.37
+    restart: always
+    container_name: typ_voting_db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: voting_system
+    ports:
+      - "3310:3306"
+    networks:
+      - typ_voting_network_prod
+    volumes:
+      - typ_voting_db_data_v15:/var/lib/mysql
+
+  typ_redis:
+    image: redis:latest
+    container_name: typ_redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - typ_redis_data:/data
+    networks:
+      - typ_voting_network_prod
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+volumes:
+  typ_voting_db_data_v15:
+  typ_redis_data:
+
+networks:
+  typ_voting_network_prod:
+    driver: bridge
