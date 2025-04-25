@@ -8,7 +8,7 @@ services:
       - "3005:80"
   typ_voting_backend:
     container_name: typ_voting_backend
-    image: vinhbh/typ-voting-api:1.4
+    image: vinhbh/typ-voting-api:1.6
     ports:
       - "8005:8000"
     command: sh -c "npm run prod & node worker.js && wait"
