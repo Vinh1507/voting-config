@@ -2,7 +2,7 @@ version: '3'
 
 services:
   sql_lab_client:
-    image: vinhbh/typ-voting-guest:1.7
+    image: vinhbh/typ-voting-guest:1.8
     container_name: typ_voting_guest
     ports:
       - "3005:80"
